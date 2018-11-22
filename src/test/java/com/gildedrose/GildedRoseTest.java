@@ -8,10 +8,7 @@ import static org.junit.Assert.assertTrue;
 public class GildedRoseTest {
 
     private static final String TEST_NAME = "testName";
-    private static final String AGED_BRIE_NAME = "Aged Brie";
-    private static final String SULFURAS_NAME = "Sulfuras, Hand of Ragnaros";
-    private static final String BACKSTAGE_PASSES_NAME = "Backstage passes to a TAFKAL80ETC concert";
-    private static final String CONJURED_NAME = "Conjured Mana Cake";
+    private static final String CONJURED_NAME = "Mana Cake";
 
     private int originalQuality;
     private int originalSellIn;
@@ -48,7 +45,7 @@ public class GildedRoseTest {
 
     @Test
     public void agedBrieQualityIncreasesIfSellInDecreases() {
-        Item item = new Item(AGED_BRIE_NAME, 0, 2);
+        ItemAgedBrie item = new ItemAgedBrie(1, 2);
         Item[] items = new Item[]{item};
         originalQuality = item.quality;
         new GildedRose(items).updateQuality();
@@ -57,7 +54,7 @@ public class GildedRoseTest {
 
     @Test
     public void agedBrieQualityIsNeverMoreThan50() {
-        Item item = new Item(AGED_BRIE_NAME, 0, 50);
+        ItemAgedBrie item = new ItemAgedBrie(0, 50);
         Item[] items = new Item[]{item};
         originalQuality = item.quality;
         new GildedRose(items).updateQuality();
@@ -66,7 +63,7 @@ public class GildedRoseTest {
 
     @Test
     public void sulfurasQualitySellInNeverChanges() {
-        Item item = new Item(SULFURAS_NAME, 10,80);
+        ItemSulfuras item = new ItemSulfuras();
         Item[] items = new Item[]{item};
         originalQuality = item.quality;
         originalSellIn = item.sellIn;
@@ -78,7 +75,7 @@ public class GildedRoseTest {
 
     @Test
     public void backstagePassesQualityIs0IfSellInIs0() {
-        Item item = new Item(BACKSTAGE_PASSES_NAME, 0, 10);
+        ItemBackstagePasses item = new ItemBackstagePasses(0, 10);
         Item[] items = new Item[]{item};
         new GildedRose(items).updateQuality();
         assertEquals(0, item.quality);
@@ -86,7 +83,7 @@ public class GildedRoseTest {
 
     @Test
     public void backstagePassesQualityIncreasesBy2IfSellInIsLessThan11() {
-        Item item = new Item(BACKSTAGE_PASSES_NAME, 9, 20);
+        ItemBackstagePasses item = new ItemBackstagePasses(9, 20);
         Item[] items = new Item[]{item};
         originalQuality = item.quality;
         new GildedRose(items).updateQuality();
@@ -95,7 +92,7 @@ public class GildedRoseTest {
 
     @Test
     public void backstagePassesQualityIncreasesBy3IfSellInIsLessThan6() {
-        Item item = new Item(BACKSTAGE_PASSES_NAME, 5, 10);
+        ItemBackstagePasses item = new ItemBackstagePasses(5, 10);
         Item[] items = new Item[]{item};
         originalQuality = item.quality;
         new GildedRose(items).updateQuality();
@@ -103,14 +100,13 @@ public class GildedRoseTest {
 
     }
 
-    //@Test
-
-    public void conjuredDeqradeQualityTwiceFasterThanNormal() {
+    @Test
+    public void conjuredDegradesQualityTwiceFasterThanNormal() {
         Item item = new Item(TEST_NAME, 10,10);
-        Item conjuredItem = new Item(CONJURED_NAME, 10,10);
+        ItemConjured conjuredItem = new ItemConjured(CONJURED_NAME, 10,10);
         Item[] items = new Item[] {item, conjuredItem};
         new GildedRose(items).updateQuality();
-        assertEquals(item.quality, conjuredItem.quality-1);
+        assertEquals(item.quality, conjuredItem.quality+1);
     }
 }
 
